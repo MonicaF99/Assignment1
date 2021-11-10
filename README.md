@@ -10,15 +10,6 @@ The simulator requires a Python 2.7 installation, the [pygame](http://pygame.org
 
 Pygame, unfortunately, can be tricky (though [not impossible](http://askubuntu.com/q/312767)) to install in virtual environments. If you are using `pip`, you might try `pip install hg+https://bitbucket.org/pygame/pygame`, or you could use your operating system's package manager. Windows users could use [Portable Python](http://portablepython.com/). PyPyBox2D and PyYAML are more forgiving, and should install just fine using `pip` or `easy_install`.
 
-## Troubleshooting
-
-When running `python run.py <file>`, you may be presented with an error: `ImportError: No module named 'robot'`. This may be due to a conflict between sr.tools and sr.robot. To resolve, symlink simulator/sr/robot to the location of sr.tools.
-
-On Ubuntu, this can be accomplished by:
-* Find the location of srtools: `pip show sr.tools`
-* Get the location. In my case this was `/usr/local/lib/python2.7/dist-packages`
-* Create symlink: `ln -s path/to/simulator/sr/robot /usr/local/lib/python2.7/dist-packages/sr/`
-
 You can run the program with:
 
 ```bash
@@ -43,7 +34,7 @@ So the robot has to drive until it's too close to a wall.
 If the wall is on the left it has to turn right, if the wall is on the right it has to turn left.
 How does the robot distinguish a wall on the left and a wall on the right?
 The first idea is to consider the angle of the nearest golden block, but the robot often takes the wrong direction!
-In the figure the robot would turn left, then it would find another wall, it would continue to turn left until it would come back.
+In the figure the robot will turn left, then it will find another wall, it will continue to turn left until it will come back.
 
 ![wrongAngle](https://user-images.githubusercontent.com/62377263/141100170-80fe52f6-465b-4df2-8575-d4078afd2e83.JPG)
 
@@ -52,14 +43,13 @@ It turns in the direction of the furthest wall. So it makes the curve in the rig
 
 ![Curve](https://user-images.githubusercontent.com/62377263/141103173-22e62bbe-69a4-48b6-acb1-ce8646243552.JPG)
 
-
 The other problem is to find the silver tokens and move them behind.
 The robot has to check if there are silver blocks in front of it.
 If it doesn't find a block, it goes on.
 If it finds a block, it checks if there are walls between them.
 If there is a wall, it ignore the silver token, otherwise it go to catch it.
 In the last case the robot doesn't control if there are walls near itself until it releases the block.
-When the robot grabs a silver token, it decides in which direction rotate to move the block behind: it checks if there is a wall next to itself on the left or on the right and decides.
+When the robot grabs a silver token, it decides in which direction rotate to move the block behind: it checks the distances of the nearest walls on the left or on the right and then decides.
 
 Pseudocode
 --------------
@@ -72,7 +62,7 @@ while(True):
   else:
    reach it
    grab it
-   if(the nearest wall in on the left):
+   if(the nearest wall is on the left):
     move the block behind turning right
     release the block
     turn behind
