@@ -1,8 +1,7 @@
-Python Robotics Simulator
+First Assignment Research Track
 ================================
 
-This is a simple, portable robot simulator developed by [Student Robotics](https://studentrobotics.org).
-Some of the arenas and the exercises have been modified for the Research Track I course
+This is a controller for a robot in a simulator environment developed by [Student Robotics](https://studentrobotics.org).
 
 Installing and running
 ----------------------
@@ -20,24 +19,69 @@ On Ubuntu, this can be accomplished by:
 * Get the location. In my case this was `/usr/local/lib/python2.7/dist-packages`
 * Create symlink: `ln -s path/to/simulator/sr/robot /usr/local/lib/python2.7/dist-packages/sr/`
 
-## Exercise
------------------------------
-
-To run one or more scripts in the simulator, use `run.py`, passing it the file names. 
-
-I am proposing you three exercises, with an increasing level of difficulty.
-The instruction for the three exercises can be found inside the .py files (exercise1.py, exercise2.py, exercise3.py).
-
-When done, you can run the program with:
+You can run the program with:
 
 ```bash
-$ python run.py exercise1.py
+$ python run.py new_assignment1.py
 ```
 
-You have also the solutions of the exercises (folder solutions)
+Problem to solve
+-----------------------------
+The robot environment for this assignment is the following arena:
 
-```bash
-$ python run.py solutions/exercise1_solution.py
+![robotArena](https://user-images.githubusercontent.com/62377263/141092719-f8607cb9-e30c-4e28-b33e-d73d3bc285a8.JPG)
+
+The robot should:
+* move in the circuit in the counter-clockwise direction 
+* avoid touching the walls (golden blocks)
+* when it finds a silver block on its road, it grabs it and moves it behind itself
+
+Reasoning to solve the problem
+-----------------------------------
+First, the robot has to avoid collisions with the walls.
+So the robot has to drive until it's too close to a wall.
+If the wall is on the left it has to turn right, if the wall is on the right it has to turn left.
+How does the robot distinguish a wall on the left and a wall on the right?
+The first idea is to consider the angle of the nearest golden block, but the robot often takes the wrong direction!
+
+[image for explaining the problem with a wrong incident angle and if it is exactly in front of the wall]
+
+So, to improve the algorithm, the robot doesn't control the angle of the wall in front of it, but checks the distances of the wall on the left and on the right.
+It turns in the direction of the furthest wall. So it makes the curve in the right way.
+
+The other problem is to find the silver tokens and move them behind.
+The robot has to check if there are silver blocks in front of it.
+If it doesn't find a block, it goes on.
+If it finds a block, it checks if there are walls between them.
+If there is a wall, it ignore the silver token, otherwise it go to catch it.
+In the last case the robot doesn't control if there are walls near itself until it releases the block.
+When the robot grabs a silver token, it decides in which direction rotate to move the block behind: it checks if there is a wall next to itself on the left or on the right and decides.
+
+Pseudocode
+--------------
+```pseudocode
+while(True):
+ drive for a short time
+ if(see a silver token):
+  if(there is a wall between the robot and the block):
+   ignore the block
+  else:
+   reach it
+   grab it
+   if(the nearest wall in on the left):
+    move the block behind turning right
+    release the block
+    turn behind
+   else:
+    move the block behind turning left
+    release the block
+    turn behind
+    
+ if(there is a wall in front of the robot too close):
+  if(wall on the right is nearest than the wall on the left):
+   turn left until the wall isn't in front of the robot
+  else:
+   turn right until the wall isn't in front of the robot
 ```
 
 Robot API
