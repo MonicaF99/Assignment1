@@ -1,6 +1,7 @@
 First Assignment Research Track
 ================================
 Author: Monica Fossati s4697871, Robotics Engineering Unige
+
 In this project, a controller was written for a robot in a simulation environment developed by [Student Robotics](https://studentrobotics.org).
 
 Installing and running
