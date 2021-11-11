@@ -31,23 +31,28 @@ So the robot has to drive until it's too close to a wall.
 If this wall is on the left it has to turn right, if this is on the right it has to turn left.
 How can the robot distinguish a wall on the right from a wall on the left?
 The first idea is to consider the angle of the nearest golden block, but the robot often takes the wrong direction!
-In the figure the robot will turn left, then it will find another wall, it will continue to turn left until it will come back.
-So the first requisite wouldn't be satisfied.
+In the figure, the nearest golden token in front of the robot is on the right, so the robot will turn left, then it will find another wall, it will continue to turn left until it will come back. So the first requisite wouldn't be satisfied!
 
-![wrongAngle](https://user-images.githubusercontent.com/62377263/141100170-80fe52f6-465b-4df2-8575-d4078afd2e83.JPG)
+![wrong_angle](https://user-images.githubusercontent.com/62377263/141282718-d7b266dc-53c2-456c-9cbc-a439ab46e206.JPG)
 
 So, to improve the algorithm, the robot doesn't control the angle of the wall in front of it, but checks the distances of the wall on the left and the wall on the right.
 It turns in the direction of the furthest wall. So it makes the curve in the right way.
+In the figure, the robot finds a closer wall on the left, so it decides to turn right, that's the right direction.
 
-![Curve](https://user-images.githubusercontent.com/62377263/141103173-22e62bbe-69a4-48b6-acb1-ce8646243552.JPG)
+![right_control](https://user-images.githubusercontent.com/62377263/141283825-b671cd34-1699-42ff-83d9-2d75b14fb971.JPG)
 
 The other problem is to find the silver tokens and move them behind.
 The robot has to check if there are silver tokens in front of it.
 If it doesn't find a block, it goes on.
 If it finds a block, it checks if there are walls between them.
 If there is a wall, it ignores the silver token, otherwise it goes to catch it.
-In the last case the robot doesn't control if there are walls near itself until it releases the block.
-When the robot grabs a silver token, it decides in which direction rotate to move the block behind: it checks the distances of the nearest walls on the left and on the right and then decides.
+
+In the figure, the robot is proceeding along the black line, searching silver tokens between the green lines. It finds a token along the red direction and checks if there are golden blocks between the orange lines that are closer than the silver block. In this case the answer is yes, so the robot will proceed along the black line.
+
+![wall_between](https://user-images.githubusercontent.com/62377263/141281351-40106bc5-9918-4953-9932-5a5b013e61ba.JPG)
+
+If the robot finds a catchable token, it doesn't control if there are walls near itself until it releases the block.
+When the robot grabs a silver token, it decides in which direction rotate to move the block behind: it checks the distances of the nearest walls on the left and on the right and then decides. In this way, it moves the silver block in the direction of the further wall. In this way if there is a wall very close to the robot, it won't be hit by the silver block during the rotation.
 
 Pseudocode
 --------------
@@ -92,5 +97,3 @@ The visual amplitude in which the robot search a token is different in the diffe
 
 The values of the thresholds regarding distances and angular amplitudes have been chosen empirically trying to improve the performance of the robot.
 
-
-[sr-api]: https://studentrobotics.org/docs/programming/sr/
