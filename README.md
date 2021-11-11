@@ -97,3 +97,6 @@ The visual amplitude in which the robot search a token is different in the diffe
 
 The values of the thresholds regarding distances and angular amplitudes have been chosen empirically trying to improve the performance of the robot.
 
+Possible improvements
+-----------------------
+After a few laps of the track, sometimes some silver blocks turn out to be very close to the walls and therefore, when the robot moves them, it can hit the wall with the back. To avoid this you could have the robot try to keep the blocks at a certain distance from the wall when it releases them.
