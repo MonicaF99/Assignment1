@@ -1,7 +1,6 @@
 First Assignment Research Track
 ================================
-
-This is a controller for a robot in a simulator environment developed by [Student Robotics](https://studentrobotics.org).
+In this project, a controller was written for a robot in a simulation environment developed by [Student Robotics](https://studentrobotics.org).
 
 Installing and running
 ----------------------
